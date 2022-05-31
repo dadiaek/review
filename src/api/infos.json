@@ -1,0 +1,52 @@
+[
+  {
+    "id": 1,
+    "title": "product01",
+    "quantite": 15,
+    "data": {
+      "commentaire": "commentaire product 01",
+      "couleur": "red",
+      "materiaux": ["mat02"]
+    }
+  },
+  {
+    "id": 2,
+    "title": "product02",
+    "quantite": 7,
+    "data": {
+      "commentaire": "commentaire product 02",
+      "couleur": "yellow",
+      "materiaux": ["mat01"]
+    }
+  },
+  {
+    "id": 3,
+    "title": "product03",
+    "quantite": 11,
+    "data": {
+      "commentaire": "commentaire product 03",
+      "couleur": "orange",
+      "materiaux": ["mat01","mat04"]
+    }
+  },
+  {
+    "id": 4,
+    "title": "product04",
+    "quantite": 8,
+    "data": {
+      "commentaire": "commentaire product 04",
+      "couleur": "aqua",
+      "materiaux": ["mat03","mat05"]
+    }
+  },
+  {
+    "id": 5,
+    "title": "product05",
+    "quantite": 0,
+    "data": {
+      "commentaire": "commentaire product 05",
+      "couleur": "white",
+      "materiaux": ["mat03","mat05"]
+    }
+  }
+]

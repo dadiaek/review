@@ -1,62 +1,39 @@
-import {Component, ElementRef, HostListener, OnInit, ViewChild} from '@angular/core';
+import {ChangeDetectionStrategy, Component, ElementRef, HostListener, OnInit, ViewChild} from '@angular/core';
 import {Observable} from "rxjs";
 import {HttpClient} from "@angular/common/http";
 import {ProductService} from "../product.service";
-
-
-interface Info {
-  quantite: number;
-  title: string;
-  data?: any;
-}
+import {IData, IInfo} from "../models/info.model";
 
 
 @Component({
   selector: 'app-inventory',
   templateUrl: './inventory.component.html',
-  styleUrls: ['./inventory.component.css']
+  styleUrls: ['./inventory.component.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class InventoryComponent implements OnInit {
+export class InventoryComponent {
 
-  constructor(private http: HttpClient, public service: ProductService) {
-    this.a$ = http.get<Info[]>("https://api-privee/info");
-  }
+  infos$: Observable<IInfo<IData>[]> = this.service.infos$
 
-  @ViewChild("relance") relanceEl!: ElementRef;
-  a$: Observable<Info[]>;
-  infos: any;
+  constructor(public service: ProductService) {}
 
-  ngOnInit(): void {
-    this.a$.subscribe((info) => (this.infos = info));
-  }
-  getInfoData(info: Info) {
+
+  getInfoData(info: IInfo<IData>) {
     return info.data !== null;
   }
-  @HostListener("mouseenter") mouseenter() {
-    this.relanceEl.nativeElement.style.backgroundColor = "red";
+
+
+  command(info: IInfo<IData>) {
+    this.service.commander(info);
   }
-  @HostListener("mouseleave") mouseleave() {
-    this.relanceEl.nativeElement.style.backgroundColor = "transparent";
+  cancel(info: IInfo<IData>) {
+    this.service.annulerCommande(info);
   }
-  // @HostListener('mouseexit') mouseexit() {
-  // if(this.relanceEl) {
-  // this.relanceEl.nativeElement.style.backgroundColor = 'yellow';
-  // }
-  // }
-  command(info: Info) {
-    this.http.post("https://api-privee/envoyer-commande", info);
+
+  revival(info: IInfo<IData>) {
+    this.service.actionDeVerification(info);
+    this.service.relance(info);
   }
-  cancel(info: Info) {
-    this.http.post("https://api-privee/cancel-commande", info);
-  }
-  // permet de faire une relance
-  rev(info: Info) {
-    this.actionDeVerification();
-    this.http.post("https://api-privee/relance", info);
-  }
-  public actionDeVerification() {
-    //.....
-    return true;
-  }
+
 
 }

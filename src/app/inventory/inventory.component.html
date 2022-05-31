@@ -1,10 +1,55 @@
-<h1>Inventaire</h1>
-<div *ngFor="let info of infos">
-  <div>{{service.getInfoOfQuantite(info.quantite, info.title)}}</div>
-  <div *ngIf="getInfoData(info)">
-    <div>{{info.data}}</div>
+<div class="row">
+  <div class="col-md-12">
+    <h3>Inventaire</h3>
+
+    <table class="table" *ngIf="infos$ | async as infos">
+      <thead>
+      <tr>
+        <th>Id</th>
+        <th>Title</th>
+        <th>Quantity</th>
+        <th>Couleur</th>
+        <th>Commentaire</th>
+        <th>Materiaux</th>
+        <th>Actions</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let info of infos">
+        <td> {{ info.id }} </td>
+        <td> {{ info.title }} </td>
+        <td> {{ info.quantite }} </td>
+        <td>
+          <span class="me-1 rounded-pill" [ngStyle]="{backgroundColor: info.data?.couleur}">
+            {{ '   ' + info.data?.couleur + '    ' }}
+          </span>
+        </td>
+        <td>
+          <p>
+            {{ info.data?.commentaire }}
+          </p>
+        </td>
+        <td>
+          <ng-container *ngFor="let mat of info.data?.materiaux">
+            <span class="badge bg-dark me-1">{{ mat }}</span>
+          </ng-container>
+        </td>
+        <td class="d-flex justify-content-between">
+          <div class="text-start">
+            <button
+              (click)="command(info)"
+              class="btn"
+              [ngClass]="info.quantite < 10 ? 'btn-danger':'btn-outline-primary'"
+            >{{ info.quantite < 10 ? 'Commander le ' + info.title : 'Commander'}}</button>
+          </div>
+          <div class="d-flex justify-content-between">
+            <button (click)="cancel(info)" class="btn btn-warning me-1">Annuler</button>
+            <button appHighLight (click)="revival(info)" class="btn btn-secondary me-1 text-warning">Réclamer</button>
+          </div>
+
+        </td>
+      </tr>
+      </tbody>
+    </table>
   </div>
-  <button (click)="command(product)">Commander un produit</button>
-  <button (click)="cancel(product)">Annuler la commande</button>
-  <button #relance (click)="revival(product)">Relancer le fournisseur</button>
 </div>
